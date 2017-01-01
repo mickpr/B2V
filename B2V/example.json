@@ -1,0 +1,17 @@
+{
+    "BitmapFile": "./weaves/double/bitmapka.png",
+    "FirstWeftOn": "top",
+    "FirstWarpOn": "top",
+    "Wefts":
+    [
+	{ "color": "#f04040", "width": "32", "spacing": "18", "image": "./threads/hhh.png", "hardness": "0.6"},
+	{ "color": "#4060f0", "width": "32", "spacing": "18", "image": "./threads/hhh.png", "hardness": "0.6"} 
+    ],
+
+    "Warps":
+    [
+	{ "color": "#ffffff", "width": "12", "spacing": "24", "image": "./threads/hhh.png", "hardness": "0.6" }
+
+
+    ]
+}

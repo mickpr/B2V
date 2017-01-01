@@ -1,29 +1,83 @@
 #include <Magick++.h>
 #include <iostream>
 #include <string>
-#include <libjson/libjson.h>
+//sudo apt-get install libjsoncpp-dev
+//	  https://en.wikibooks.org/wiki/JsonCpp
+
+#include <jsoncpp/json/json.h>
+
 #include <unordered_map>
+#include <fstream>
 
 using namespace std;
 using namespace Magick;
 
 int main(int argc,char **argv)
 {
-  InitializeMagick(*argv);
+	InitializeMagick(*argv);
 
+	try
+	{
+		ifstream ifs("example.json");
+		Json::Reader reader;
+		Json::Value obj;
+		reader.parse(ifs, obj); // reader can also read strings
+
+		cout << "BitmapFile: " << obj["BitmapFile"].asString() << endl;
+		cout << "FirstWeftOn: " << obj["FirstWeftOn"].asString() << endl;
+		cout << "FirstWarpOn: " << obj["FirstWarpOn"].asString() << endl;
+		cout << "Wefts" << std::endl;
+		const Json::Value& wefts = obj["Wefts"]; // array of characters
+		for (unsigned int i = 0; i < wefts.size(); i++){
+			cout << "    color: " << wefts[i]["color"].asString(); //.asUInt();
+			cout << "    width: " << wefts[i]["width"].asString();
+			cout << "  spacing: " << wefts[i]["spacing"].asString();
+			cout << "    image: " << wefts[i]["image"].asString();
+			cout << " hardness: " << wefts[i]["hardness"].asString();
+			cout << endl;
+		}
+
+		cout << "Warps" << std::endl;
+		const Json::Value& warps = obj["Warps"]; // array of characters
+		for (unsigned int i = 0; i < warps.size(); i++){
+			cout << "    color: " << warps[i]["color"].asString(); //.asUInt();
+			cout << "    width: " << warps[i]["width"].asString();
+			cout << "  spacing: " << warps[i]["spacing"].asString();
+			cout << "    image: " << warps[i]["image"].asString();
+			cout << " hardness: " << warps[i]["hardness"].asString();
+			cout << endl;
+		}
+	} catch( Exception &error_ ) {
+      cout << "Caught exception: " << error_.what() << endl;
+      return 1;
+    }
   // Construct the image object. Separating image construction from the
   // the read operation ensures that a failure to read the image file
   // doesn't render the image object useless.
-  Image image;
+  Image image, img;
   try {
     // Read a file into image object
     image.read( "girl.jpg" );
 
     // Crop the image to specified size (width, height, xOffset, yOffset)
     image.crop( Geometry(100,100, 100, 100) );
-
     // Write the image to a file
     image.write( "x.gif" );
+
+
+    // Create base image (white image of 300 by 200 pixels)
+    img = Image( Geometry(300,200), Color("white") );
+
+    img.strokeColor("red"); // Outline color
+    img.fillColor("green"); // Fill color
+    img.strokeWidth(5);
+    // Draw a circle
+    img.draw( DrawableCircle(100,100, 50,100) );
+    // Draw a rectangle
+    img.draw( DrawableRectangle(200,200, 270,170) );
+
+    img.display( );
+
   }
   catch( Exception &error_ )
     {
@@ -32,17 +86,7 @@ int main(int argc,char **argv)
     }
 
 
-printf("test JSON-a\n");
 
-JSONNODE *n = json_new(JSON_NODE);
-json_push_back(n, json_new_a("String Node", "String Value"));
-json_push_back(n, json_new_i("Integer Node", 42));
-json_push_back(n, json_new_f("Floating Point Node", 3.14));
-json_push_back(n, json_new_b("Boolean Node", 1));
-json_char *jc = json_write_formatted(n);
-printf("%s\n", jc);
-json_free(jc);
-json_delete(n);
 
     std::unordered_map<std::string, int> months;
     months["January"] = 31;
