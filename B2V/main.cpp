@@ -8,13 +8,16 @@
 
 #include <unordered_map>
 #include <fstream>
-
+#include "Weft.h"
 using namespace std;
 using namespace Magick;
 
 int main(int argc,char **argv)
 {
+	Weft c;
+
 	InitializeMagick(*argv);
+
 
 	try
 	{
@@ -26,6 +29,7 @@ int main(int argc,char **argv)
 		cout << "BitmapFile: " << obj["BitmapFile"].asString() << endl;
 		cout << "FirstWeftOn: " << obj["FirstWeftOn"].asString() << endl;
 		cout << "FirstWarpOn: " << obj["FirstWarpOn"].asString() << endl;
+
 		cout << "Wefts" << std::endl;
 		const Json::Value& wefts = obj["Wefts"]; // array of characters
 		for (unsigned int i = 0; i < wefts.size(); i++){
@@ -48,47 +52,45 @@ int main(int argc,char **argv)
 			cout << endl;
 		}
 	} catch( Exception &error_ ) {
-      cout << "Caught exception: " << error_.what() << endl;
-      return 1;
+		cout << "Caught exception: " << error_.what() << endl;
+		return 1;
     }
-  // Construct the image object. Separating image construction from the
-  // the read operation ensures that a failure to read the image file
-  // doesn't render the image object useless.
-  Image image, img;
-  try {
-    // Read a file into image object
-    image.read( "girl.jpg" );
 
-    // Crop the image to specified size (width, height, xOffset, yOffset)
-    image.crop( Geometry(100,100, 100, 100) );
-    // Write the image to a file
-    image.write( "x.gif" );
+	// Construct the image object. Separating image construction from the
+	// the read operation ensures that a failure to read the image file
+	// doesn't render the image object useless.
+	Image image, img;
+	try {
+		// Read a file into image object
+		image.read( "girl.jpg" );
 
+		// Crop the image to specified size (width, height, xOffset, yOffset)
+		image.crop( Geometry(100,100, 100, 100) );
+		// Write the image to a file
+		image.write( "x.gif" );
 
-    // Create base image (white image of 300 by 200 pixels)
-    img = Image( Geometry(300,200), Color("white") );
+		// Create base image (white image of 300 by 200 pixels)
+		img = Image( Geometry(300,200), Color("white") );
 
-    img.strokeColor("red"); // Outline color
-    img.fillColor("green"); // Fill color
-    img.strokeWidth(5);
-    // Draw a circle
-    img.draw( DrawableCircle(100,100, 50,100) );
-    // Draw a rectangle
-    img.draw( DrawableRectangle(200,200, 270,170) );
+		img.strokeColor("red"); // Outline color
+		img.fillColor("green"); // Fill color
+		img.strokeWidth(5);
+		// Draw a circle
+		img.draw( DrawableCircle(100,100, 50,100) );
+		// Draw a rectangle
+		img.draw( DrawableRectangle(200,200, 270,170) );
 
-    img.display( );
-
-  }
-  catch( Exception &error_ )
-    {
-      cout << "Caught exception: " << error_.what() << endl;
-      return 1;
+		img.display( );
+	}
+	catch( Exception &error_ )  {
+		cout << "Caught exception: " << error_.what() << endl;
+		return 1;
     }
 
 
 
 
-    std::unordered_map<std::string, int> months;
+	std::unordered_map<std::string, int> months;
     months["January"] = 31;
     months["February"] = 28;
     months["March"] = 31;
@@ -110,9 +112,9 @@ int main(int argc,char **argv)
 	// string dupa = "asdasdasd";
 	// printf("%s\n",dupa.c_str());
 
- //    // char* na string
- //    char * dupa2 = "dupa2";
- //    string dupa3 = dupa2;
- //    cout << dupa3;
-  return 0;
+    //    // char* na string
+    //    char * dupa2 = "dupa2";
+    //    string dupa3 = dupa2;
+    //    cout << dupa3;
+    return 0;
 }
