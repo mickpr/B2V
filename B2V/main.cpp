@@ -5,10 +5,11 @@
 //	  https://en.wikibooks.org/wiki/JsonCpp
 
 #include <jsoncpp/json/json.h>
-
 #include <unordered_map>
 #include <fstream>
 #include "Weft.h"
+#include "TimeCounter.h"
+
 using namespace std;
 using namespace Magick;
 
@@ -16,8 +17,11 @@ int main(int argc,char **argv)
 {
 	Weft c;
 
-	InitializeMagick(*argv);
 
+	InitializeMagick(*argv);
+	TimeCounter timer;
+
+	timer.start();
 
 	try
 	{
@@ -80,7 +84,7 @@ int main(int argc,char **argv)
 		// Draw a rectangle
 		img.draw( DrawableRectangle(200,200, 270,170) );
 
-		img.display( );
+		//img.display( );
 	}
 	catch( Exception &error_ )  {
 		cout << "Caught exception: " << error_.what() << endl;
@@ -116,5 +120,11 @@ int main(int argc,char **argv)
     //    char * dupa2 = "dupa2";
     //    string dupa3 = dupa2;
     //    cout << dupa3;
+
+
+    //timer.wait(1201);
+
+    timer.stop();
+    cout << "czas trwania " << std::to_string(timer.getTime()) << " sek.";
     return 0;
 }
