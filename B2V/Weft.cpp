@@ -6,14 +6,26 @@
  */
 
 #include "Weft.h"
-
+#include <Magick++.h>
+#include <unordered_map>
 
 Weft::Weft() {
 	// TODO Auto-generated constructor stub
-
 }
 
-Weft::Weft(string image, string color, int width, int spacing, float hardness) {
+Weft::Weft(string imageFile, string color, int width, int spacing, float hardness) {
+
+	Image img;
+	img.magick("RGB");
+	img.read(imageFile);
+	ImagesHashtable["000"] = img;
+	ImagesHashtable["001"] = img;
+	ImagesHashtable["010"] = img;
+	ImagesHashtable["011"] = img;
+	ImagesHashtable["100"] = img;
+	ImagesHashtable["101"] = img;
+	ImagesHashtable["110"] = img;
+	ImagesHashtable["111"] = img;
 	//			w = Weaving::Trapezoid.new(image,6,hardness) {}
 	//
 	//		    @images["000"] = w.generate("000")
@@ -37,6 +49,8 @@ Weft::~Weft() {
 	// TODO Auto-generated destructor stub
 }
 
-
+Image Weft::getImage(string key) {
+	return ImagesHashtable[key];
+}
 
 //	attr_accessor :color, :width, :spacing, :images

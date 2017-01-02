@@ -10,8 +10,11 @@
 
 #include <string>
 #include <unordered_map>
+#include <Magick++.h>
+#include <unordered_map>
 
 using namespace std;
+using namespace Magick;
 
 class Weft {
 
@@ -21,10 +24,21 @@ private:
 	int 	width;
 	int 	spacing;
 	float 	hardness;
-	//Hash		images;
+	std::unordered_map<std::string, Magick::Image> ImagesHashtable;
+
+//	Image	image000;
+//	Image	image001;
+//	Image	image010;
+//	Image	image011;
+//	Image	image100;
+//	Image	image101;
+//	Image	image110;
+//	Image	image111;
+
 public:
 	Weft();
-	Weft(string image, string color, int width, int spacing, float hardness);
+	Weft(string imageFile, string color, int width, int spacing, float hardness=1.0);
+	Image getImage(string key);
 	virtual ~Weft();
 };
 

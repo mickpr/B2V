@@ -15,11 +15,23 @@ using namespace Magick;
 
 int main(int argc,char **argv)
 {
-	Weft c;
-
-
 	InitializeMagick(*argv);
 	TimeCounter timer;
+
+	//Weft c("x.gif","082992",100,100,1.0);
+	//Image im  = c.getImage("100");
+	//im.display();
+//	Image im;
+//	im.read("girl.jpg");
+//	im.display();
+//	im.chop(Geometry(100,100));
+//	im.display();
+//	im.crop(Geometry(200,200));
+//	im.display();
+//	return 0;
+
+
+	return 0;
 
 	timer.start();
 
