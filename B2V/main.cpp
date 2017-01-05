@@ -1,14 +1,13 @@
 #include <Magick++.h>
 #include <iostream>
 #include <string>
-//sudo apt-get install libjsoncpp-dev
-//	  https://en.wikibooks.org/wiki/JsonCpp
-
+// sudo apt-get install libjsoncpp-dev -   https://en.wikibooks.org/wiki/JsonCpp
 #include <jsoncpp/json/json.h>
 #include <map>
 #include <fstream>
 #include "Weft.h"
 #include "TimeCounter.h"
+#include "Trapezoid.h"
 
 using namespace std;
 using namespace Magick;
@@ -18,9 +17,24 @@ int main(int argc,char **argv)
 	InitializeMagick(*argv);
 	TimeCounter timer;
 
-	Weft c("x.gif","082992",100,100,1.0);
-	Image im  = c.getImage("100");
-	im.display();
+	//Weft c("x.gif","082992",100,100,1.0);
+	//Image im  = c.getImage("100");
+	//im.display();
+
+	Trapezoid t;
+	t.init("girl.jpg",100,1.0);
+
+	t.generate("000").display();
+
+	return 0;
+
+//	Image im;
+//	im.read("girl.jpg");
+//	im.display();
+//	im.chop(Geometry(100,100)); (x1,y1)
+//	im.crop(Geometry(100,100)); (width, height)
+//	im.display();
+//	return 0;
 
 //	Image im;
 //	im.read("girl.jpg");
@@ -68,8 +82,8 @@ int main(int argc,char **argv)
 			cout << " hardness: " << warps[i]["hardness"].asString();
 			cout << endl;
 		}
-	} catch( Exception &error_ ) {
-		cout << "Caught exception: " << error_.what() << endl;
+	} catch( std::exception error) {
+		cout << "Caught exception: " << error.what() << endl;
 		return 1;
     }
 
@@ -107,7 +121,7 @@ int main(int argc,char **argv)
 
 
 
-	std::unordered_map<std::string, int> months;
+	std::map<std::string, int> months;
     months["January"] = 31;
     months["February"] = 28;
     months["March"] = 31;
