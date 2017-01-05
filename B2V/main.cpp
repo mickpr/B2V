@@ -5,7 +5,7 @@
 //	  https://en.wikibooks.org/wiki/JsonCpp
 
 #include <jsoncpp/json/json.h>
-#include <unordered_map>
+#include <map>
 #include <fstream>
 #include "Weft.h"
 #include "TimeCounter.h"
@@ -18,9 +18,10 @@ int main(int argc,char **argv)
 	InitializeMagick(*argv);
 	TimeCounter timer;
 
-	//Weft c("x.gif","082992",100,100,1.0);
-	//Image im  = c.getImage("100");
-	//im.display();
+	Weft c("x.gif","082992",100,100,1.0);
+	Image im  = c.getImage("100");
+	im.display();
+
 //	Image im;
 //	im.read("girl.jpg");
 //	im.display();
@@ -42,7 +43,7 @@ int main(int argc,char **argv)
 		Json::Value obj;
 		reader.parse(ifs, obj); // reader can also read strings
 
-		cout << "BitmapFile: " << obj["BitmapFile"].asString() << endl;
+		cout << "BitmapFile: "  << obj["BitmapFile"].asString() << endl;
 		cout << "FirstWeftOn: " << obj["FirstWeftOn"].asString() << endl;
 		cout << "FirstWarpOn: " << obj["FirstWarpOn"].asString() << endl;
 

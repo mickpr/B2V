@@ -7,7 +7,7 @@
 
 #include "Weft.h"
 #include <Magick++.h>
-#include <unordered_map>
+#include <map>
 
 Weft::Weft() {
 	// TODO Auto-generated constructor stub
