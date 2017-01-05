@@ -27,7 +27,13 @@ void Trapezoid::init(std::string imageFilename, int part_width, double hardness)
 	{
 		image.read(imageFilename);
 
-		image.resize(Geometry(100,100));
+
+		Geometry newSize = Geometry(200, 200);
+		// Resize without preserving Aspect Ratio
+		newSize.aspect(true);
+		image.resize(newSize);
+
+		//image.resize(Geometry(100,100));
 
 		width = image.columns();
 		height = image.rows();
@@ -55,13 +61,19 @@ Magick::Image Trapezoid::generate(std::string key) {
 	cout << "Image has width=" << width << " and " << height << endl;
 	cout << "Middle: " << width << " and " << height << endl;
 
-	img_left.crop(Magick::Geometry(width/parts_in_brick_width,height));
-	//img_middle.chop(Magick::Geometry(width/parts_in_brick_width,height));
-	//img_middle.crop(Magick::Geometry(width/parts_in_brick_width,height));
-	//cout << width-(2*width/parts_in_brick_width) << endl;
-	//img_right.chop(Magick::Geometry(width-width/parts_in_brick_width,0));
+//	[0,0]      [szerokosc-1,0][szer,0].......[width-1-szer,0].......[width-1,0]
+//	................................................................
+//	[0,height] [szer-1,height][szer,height]..[width-1-szer,height]..[width-1,height]
 
-	return img_left;
+
+	img_left.crop(Magick::Geometry(width/parts_in_brick_width,height));
+	cout << "Image left: " <<img_left.columns()<< "x"<< img_left.rows() << endl;
+	img_middle.crop(Magick::Geometry(width-(width/parts_in_brick_width),height));
+	img_middle.chop(Magick::Geometry(width/parts_in_brick_width,0));
+	cout << "Image midl: " <<img_middle.columns()<< "x"<< img_middle.rows() << endl;
+	img_right.chop(Magick::Geometry(width-width/parts_in_brick_width,0));
+	cout << "Image right: " <<img_right.columns()<< "x"<< img_right.rows() << endl;
+	return img_middle;
 
 /*
  *

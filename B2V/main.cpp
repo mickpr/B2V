@@ -24,6 +24,10 @@ int main(int argc,char **argv)
 	Trapezoid t;
 	t.init("girl.jpg",100,1.0);
 
+	Image im;
+	im.read("girl.jpg");
+	im.display();
+
 	t.generate("000").display();
 
 	return 0;
