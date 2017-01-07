@@ -1,10 +1,11 @@
 #ifndef TRAPEZOID_H_
 #define TRAPEZOID_H_
 #include <string>
-#include <Magick++.h>
 #include <exception>
 #include <iostream>
-
+#include <Magick++.h>
+using namespace std;
+using namespace Magick;
 
 class Trapezoid {
 
@@ -14,7 +15,7 @@ private:
 	double 		hardness;
 	Magick::Image image;
 	int 		width, height;
-	Magick::Image img_left, img_middle, img_right;
+	Magick::Image  img_left, img_middle, img_right;
 
 public:
 	Trapezoid();

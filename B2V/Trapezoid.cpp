@@ -6,20 +6,16 @@
  */
 
 #include "Trapezoid.h"
-
-using namespace std;
+#include <Magick++.h>
+#include <Magick++/Image.h>
 using namespace Magick;
+using namespace MagickCore;
 
 Trapezoid::Trapezoid() {
-	// TODO Auto-generated constructor stub
+
 }
 
 Trapezoid::~Trapezoid() {
-	// TODO Auto-generated destructor stub
-//	delete &image;
-//	delete &img_left;
-//	delete &img_middle;
-//	delete &img_right;
 }
 
 void Trapezoid::init(std::string imageFilename, int part_width, double hardness) {
@@ -28,7 +24,7 @@ void Trapezoid::init(std::string imageFilename, int part_width, double hardness)
 		image.read(imageFilename);
 
 
-		Geometry newSize = Geometry(200, 200);
+		Magick::Geometry newSize = Magick::Geometry(200, 200);
 		// Resize without preserving Aspect Ratio
 		newSize.aspect(true);
 		image.resize(newSize);
@@ -52,11 +48,10 @@ Magick::Image Trapezoid::generate(std::string key) {
 
 	Magick::Image img;
 	//int n;
-
 	// crop - lewy   gorny rog zostaje
 	// chop - prawy dolny rog zostaje.
 	//img_left.chop(Magick::Geometry(0,0));
-	parts_in_brick_width =3;
+	parts_in_brick_width =5;
 
 	cout << "Image has width=" << width << " and " << height << endl;
 	cout << "Middle: " << width << " and " << height << endl;
@@ -66,28 +61,76 @@ Magick::Image Trapezoid::generate(std::string key) {
 //	[0,height] [szer-1,height][szer,height]..[width-1-szer,height]..[width-1,height]
 
 
+	//img_middle.transparent(0);
+
 	img_left.crop(Magick::Geometry(width/parts_in_brick_width,height));
-	cout << "Image left: " <<img_left.columns()<< "x"<< img_left.rows() << endl;
+	//cout << "Image left: " <<img_left.columns()<< "x"<< img_left.rows() << endl;
 	img_middle.crop(Magick::Geometry(width-(width/parts_in_brick_width),height));
 	img_middle.chop(Magick::Geometry(width/parts_in_brick_width,0));
-	cout << "Image midl: " <<img_middle.columns()<< "x"<< img_middle.rows() << endl;
+	//cout << "Image midl: " <<img_middle.columns()<< "x"<< img_middle.rows() << endl;
 	img_right.chop(Magick::Geometry(width-width/parts_in_brick_width,0));
-	cout << "Image right: " <<img_right.columns()<< "x"<< img_right.rows() << endl;
+	//cout << "Image right: " <<img_right.columns()<< "x"<< img_right.rows() << endl;
+
+//	Magick::DrawableAffine matrix(sx, rx, ry, sy, 0, 0);
+//	Magick::DrawableAffine matrix(sx, rx, ry, sy, tx, ty);
+//	img.virtualPixelMethod(Magick::TransparentVirtualPixelMethod);
+//	img.affineTransform(matrix);
+
+	//int squeeze=20;
+	double points[17];
+	points[0]=1.5;
+
+	points[1]=0;
+	points[2]=0;
+	points[3]=0;
+	points[4]=0;
+
+	points[5]=200;
+	points[6]=0;
+	points[7]=200;
+	points[8]=40;
+
+	points[9]=200;
+	points[10]=200;
+	points[11]=200;
+	points[12]=160;
+
+	points[13]=0;
+	points[14]=200;
+	points[15]=0;
+	points[16]=200;
+
+	//img_middle.distort( img_middle, 1.5, 0,0, 0,0, width,0, width,squeeze, width,height, width,height - squeeze, 0,height, 0,height	);
+	//ExceptionInfo e;
+
+
+
+	//di._method
+	//MagickSetImageVirtualPixelMethod(magick_wand,MagickCore::TransparentVirtualPixelMethod);	SetImageVirtualPixelMethod(img_middle,TransparentVirtualPixelMethod);
+	//img_middle.set
+	img_middle.virtualPixelMethod(TransparentVirtualPixelMethod);
+	img_middle.distort(PolynomialDistortion,17,points,MagickFalse);
+
+
+//	img_middle.distort(const DistortImageMethod method_,
+/s/	      const size_t number_arguments_,const double *arguments_,
+//	      const bool bestfit_=false);
+
 	return img_middle;
 
 /*
  *
 n=0  # zmienna pomocnicza
-		img_left  = @img.crop(0,0,@width/@parts_in_brick_width,@height)
-		img_left.virtual_pixel_method = Magick::TransparentVirtualPixelMethod
-		# puts n
-		n=n+@width/@parts_in_brick_width
-		img_middle= @img.crop(n,0,@width-2*@width/@parts_in_brick_width,@height)
-		img_middle.virtual_pixel_method = Magick::TransparentVirtualPixelMethod
-		# puts n
-		n=@width-n
-		img_right = @img.crop(n,0,@width/@parts_in_brick_width, @height)
-		img_right.virtual_pixel_method = Magick::TransparentVirtualPixelMethod
+//		img_left  = @img.crop(0,0,@width/@parts_in_brick_width,@height)
+//		img_left.virtual_pixel_method = Magick::TransparentVirtualPixelMethod
+//		# puts n
+//		n=n+@width/@parts_in_brick_width
+//		img_middle= @img.crop(n,0,@width-2*@width/@parts_in_brick_width,@height)
+//		img_middle.virtual_pixel_method = Magick::TransparentVirtualPixelMethod
+//		# puts n
+//		n=@width-n
+//		img_right = @img.crop(n,0,@width/@parts_in_brick_width, @height)
+//		img_right.virtual_pixel_method = Magick::TransparentVirtualPixelMethod
 
 
 #		@hardness =0.8 # procentowo (0..1) grubosc nitki cienkiej w porownaniu do grubej
