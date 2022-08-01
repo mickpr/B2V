@@ -1,2 +1,2 @@
 # B2V
-# ImageMagick tests for image transformations for generating weave appearance for fabric visualization.
+# ImageMagick library C++ tests with image transformations used for generating weave appearance for fabric weft visualization.
